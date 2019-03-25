@@ -16,19 +16,22 @@
  *
  */
 
-package org.apache.skywalking.oap.server.core.source;
+package org.apache.skywalking.apm.network.trace.component.command;
 
-import java.lang.annotation.*;
+import org.apache.skywalking.apm.network.common.Command;
 
 /**
- * DefaultScopeDefine id declaration.
+ * Clear the service metadata cache and other metadata caches belong to it, and re-register them.
  *
- * @author wusheng
+ * @author peng-yongsheng
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ScopeDeclaration {
-    int id();
-    String name();
-    String catalog() default "";
+public class ServiceResetCommand extends BaseCommand implements Serializable {
+
+    public ServiceResetCommand(String serialNumber) {
+        super("ServiceMetadataReset", serialNumber);
+    }
+
+    @Override public Command.Builder serialize() {
+        return commandBuilder();
+    }
 }

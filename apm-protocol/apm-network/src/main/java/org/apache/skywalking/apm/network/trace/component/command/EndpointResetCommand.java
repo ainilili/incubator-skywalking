@@ -16,29 +16,30 @@
  *
  */
 
-package org.apache.skywalking.oap.server.core.source;
+package org.apache.skywalking.apm.network.trace.component.command;
 
-import lombok.*;
-
-import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.SERVICE_INSTANCE_CATALOG_NAME;
-import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.SERVICE_INSTANCE_JVM_CPU;
+import org.apache.skywalking.apm.network.common.*;
 
 /**
+ * Remove the specified endpoint names from endpoint metadata cache, and re-register it.
+ * If not specified, clear whole endpoint metadata cache.
+ *
  * @author peng-yongsheng
  */
-@ScopeDeclaration(id = SERVICE_INSTANCE_JVM_CPU, name = "ServiceInstanceJVMCPU", catalog = SERVICE_INSTANCE_CATALOG_NAME)
-public class ServiceInstanceJVMCPU extends Source {
-    @Override public int scope() {
-        return DefaultScopeDefine.SERVICE_INSTANCE_JVM_CPU;
+public class EndpointResetCommand extends BaseCommand implements Serializable {
+
+    public EndpointResetCommand(String serialNumber) {
+        super("EndpointMetadataReset", serialNumber);
     }
 
-    @Override public String getEntityId() {
-        return String.valueOf(id);
+    @Override public Command.Builder serialize() {
+        return commandBuilder();
     }
 
-    @Getter @Setter private int id;
-    @Getter @Setter private String name;
-    @Getter @Setter private String serviceName;
-    @Getter @Setter private int serviceId;
-    @Getter @Setter private double usePercent;
+    public void addSpecifiedEndpointName(String endpointName) {
+        KeyStringValuePair.Builder arguments = KeyStringValuePair.newBuilder();
+        arguments.setKey("EndpointName");
+        arguments.setValue(endpointName);
+        commandBuilder().addArgs(arguments);
+    }
 }

@@ -16,19 +16,29 @@
  *
  */
 
-package org.apache.skywalking.oap.server.core.source;
+package org.apache.skywalking.apm.network.trace.component.command;
 
-import java.lang.annotation.*;
+import org.apache.skywalking.apm.network.common.*;
 
 /**
- * DefaultScopeDefine id declaration.
+ * Trace ignore sync, each configuration downstream is the full amount of data related to the received agent.
  *
- * @author wusheng
+ * @author peng-yongsheng
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ScopeDeclaration {
-    int id();
-    String name();
-    String catalog() default "";
+public class TraceIgnoreCommand extends BaseCommand implements Serializable {
+
+    public TraceIgnoreCommand(String serialNumber) {
+        super("TraceIgnore", serialNumber);
+    }
+
+    @Override public Command.Builder serialize() {
+        return commandBuilder();
+    }
+
+    public void addRule(String path) {
+        KeyStringValuePair.Builder arguments = KeyStringValuePair.newBuilder();
+        arguments.setKey("Path");
+        arguments.setValue(path);
+        commandBuilder().addArgs(arguments);
+    }
 }

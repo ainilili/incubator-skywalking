@@ -16,19 +16,13 @@
  *
  */
 
-package org.apache.skywalking.oap.server.core.source;
+package org.apache.skywalking.apm.network.trace.component.command;
 
-import java.lang.annotation.*;
+import org.apache.skywalking.apm.network.common.Command;
 
 /**
- * DefaultScopeDefine id declaration.
- *
- * @author wusheng
+ * @author peng-yongsheng
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ScopeDeclaration {
-    int id();
-    String name();
-    String catalog() default "";
+public interface Deserializable {
+    void deserialize(Command command);
 }
